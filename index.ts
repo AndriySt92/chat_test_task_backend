@@ -3,6 +3,8 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import connectDB from './src/db/connectDb'
 import userRoutes from './src/routes/user.routes'
+import chatRoutes from './src/routes/chat.routes'
+import messageRoutes from './src/routes/message.routes'
 import { IHttpError } from './src/interfaces/errorInterfaces'
 import { errorMessageList } from './src/utils/httpError'
 
@@ -16,6 +18,8 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', userRoutes)
+app.use('/api/messages', messageRoutes)
+app.use('/api/chats', chatRoutes)
 
 app.use((req: Request, res: Response): void => {
   res.status(404).json({ message: 'Not Found' })
