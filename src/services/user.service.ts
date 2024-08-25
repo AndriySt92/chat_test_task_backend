@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import UserModel from '../models/user.model'
 import { httpError, generateToken } from '../utils'
 import { ILoginData, IRegisterData, IUser } from '../interfaces/userInterfaces'
+import chatService from './chat.service'
 
 const register = async (registerData: IRegisterData): Promise<IUser & { token: string }> => {
   const { firstName, lastName, password, email } = registerData
@@ -20,6 +21,8 @@ const register = async (registerData: IRegisterData): Promise<IUser & { token: s
     email,
     password: hashedPassword,
   })
+
+  await chatService.addInitialChats(newUser._id.toString());
 
   const token = generateToken(newUser._id.toString())
 

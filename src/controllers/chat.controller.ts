@@ -2,13 +2,13 @@ import { Request, Response } from 'express'
 import ChatService from '../services/chat.service'
 
 const addChat = async (req: Request, res: Response) => {
-  const { lastName, firstName, userId } = req.body
+  const { lastName, firstName } = req.body
+  const userId = req.user?._id as string
 
   const createdChat = await ChatService.create({ lastName, firstName, userId })
 
   res.status(200).json(createdChat)
 }
-
 
 const updateChat = async (req: Request, res: Response) => {
   const { lastName, firstName } = req.body
@@ -22,8 +22,9 @@ const updateChat = async (req: Request, res: Response) => {
 
 const getChats = async (req: Request, res: Response) => {
   const userId = req.user?._id as string
+  const { search } = req.query
 
-  const chats = await ChatService.getAll(userId)
+  const chats = await ChatService.getAll(userId, search as string)
 
   res.status(200).json(chats)
 }

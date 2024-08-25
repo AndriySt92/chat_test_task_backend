@@ -4,6 +4,7 @@ export interface IUserSchema {
   firstName: string
   lastName: string
   email: string
+  avatar: string | null
   password: string
 }
 
@@ -22,6 +23,7 @@ const UserSchema = new mongoose.Schema<IUserSchema>(
       required: true,
       unique: true,
     },
+    avatar: { type: String, default: null },
     password: {
       type: String,
       required: true,

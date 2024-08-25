@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
 import MessageService from '../services/message.service'
 
-const addMessages = async (req: Request, res: Response) => {
+const addMessage = async (req: Request, res: Response) => {
   const { messageText } = req.body
   const { id: receiverId } = req.params
   const senderId = req.user?._id as string
 
-  const result = await MessageService.create({ messageText, receiverId, senderId })
+  const message = await MessageService.create({ messageText, receiverId, senderId })
 
-  res.status(200).json({ message: result })
+  res.status(200).json({ message })
 }
 
 const updateMessage = async (req: Request, res: Response) => {
@@ -16,12 +16,12 @@ const updateMessage = async (req: Request, res: Response) => {
   const { id: messageId } = req.params
   const senderId = req.user?._id as string
 
-  const result = await MessageService.update({ messageText, messageId, senderId })
+  const message = await MessageService.update({ messageText, messageId, senderId })
 
-  res.status(200).json({ message: result })
+  res.status(200).json({ message })
 }
 
 export default {
-  addMessages,
+  addMessage,
   updateMessage,
 }

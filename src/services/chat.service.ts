@@ -27,12 +27,25 @@ const update = async ({ lastName, firstName, userId, chatId }: IUpdateChatData) 
   return updateChat
 }
 
-const getAll = async (userId: string) => {
-  return await ChatModel.find({ user_creator: userId }).select('-messages')
+const getAll = async (userId: string, search: string) => {
+  const query: any = { user_creator: userId }
+
+  if (search) {
+    query['$or'] = [
+      { bot_firstName: { $regex: search, $options: 'i' } },
+      { bot_lastName: { $regex: search, $options: 'i' } },
+    ]
+  }
+
+  return await ChatModel.find(query).select('-messages').populate('lastMessage')
 }
 
 const getMessages = async ({ userId, chatId }: { userId: string; chatId: string }) => {
-  return await ChatModel.find({ user_creator: userId, _id: chatId }).populate('messages')
+  const chat = await ChatModel.findOne({ user_creator: userId, _id: chatId })
+    .select('messages')
+    .populate('messages')
+
+  return chat ? chat.messages : []
 }
 
 const remove = async ({ userId, chatId }: { userId: string; chatId: string }) => {
@@ -46,16 +59,16 @@ const remove = async ({ userId, chatId }: { userId: string; chatId: string }) =>
 }
 
 const addInitialChats = async (userId: string) => {
-  const chatPromises = initialChats.map(chat =>
+  const chatPromises = initialChats.map((chat) =>
     ChatModel.create({
       bot_firstName: chat.firstName,
       bot_lastName: chat.lastName,
       user_creator: userId,
-    })
-  );
+    }),
+  )
 
-  await Promise.all(chatPromises);
-};
+  await Promise.all(chatPromises)
+}
 
 export default {
   create,
@@ -63,5 +76,5 @@ export default {
   getAll,
   getMessages,
   remove,
-  addInitialChats
+  addInitialChats,
 }

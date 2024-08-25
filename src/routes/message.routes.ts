@@ -5,7 +5,7 @@ import { authenticate } from '../middlewares/authenticate'
 
 const router = express.Router()
 
-router.post('/add/:id', authenticate, ctrlWrapper(MessageController.addMessages))
-router.put('/:id', authenticate, ctrlWrapper(MessageController.updateMessage))
+router.post('/add/:id', authenticate, ctrlWrapper(MessageController.addMessage))
+router.patch('/:id', authenticate, ctrlWrapper(MessageController.updateMessage))
 
 export default router

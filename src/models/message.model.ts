@@ -7,7 +7,7 @@ export interface IMessageSchema {
   updatedAt: Date;
 }
 
-const messageSchema = new mongoose.Schema(
+const messageSchema = new mongoose.Schema<IMessageSchema>(
   {
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
