@@ -1,9 +1,7 @@
-import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
-import { httpError } from '../utils'
-import UserService from '../services/user.service'
+import UserService from '../services/user.service.js'
 
-const register = async (req: Request, res: Response) => {
+const register = async (req, res) => {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -15,7 +13,7 @@ const register = async (req: Request, res: Response) => {
   res.status(201).json(user)
 }
 
-const login = async (req: Request, res: Response) => {
+const login = async (req, res) => {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
@@ -27,7 +25,7 @@ const login = async (req: Request, res: Response) => {
   res.status(200).json(user)
 }
 
-const current = async (req: Request, res: Response) => {
+const current = async (req, res) => {
   const user = req.user
   return res.status(200).json(user)
 }

@@ -1,6 +1,4 @@
-import { IErrorMessageList, IHttpError } from '../interfaces/errorInterfaces';
-
-export const errorMessageList: IErrorMessageList = {
+export const errorMessageList = {
   400: 'Bad Request',
   401: 'Unauthorized',
   403: 'Forbidden',
@@ -12,8 +10,8 @@ export const errorMessageList: IErrorMessageList = {
 export const httpError = ({
   status = 500,
   message = errorMessageList[status],
-}: IHttpError): IHttpError => {
-  const error = new Error(message) as Error & IHttpError ;
+}) => {
+  const error = new Error(message);
   error.status = status;
   return error;
 };

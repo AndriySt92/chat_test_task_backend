@@ -1,5 +1,5 @@
 import ChatModel from '../models/chat.model.js'
-import { httpError } from '../utils'
+import { httpError } from '../utils/httpError.js'
 import { initialChats } from '../seedData/initialChats.js'
 
 const create = async ({ lastName, firstName, userId }) => {

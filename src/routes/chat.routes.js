@@ -1,6 +1,6 @@
 import express from 'express'
 import ChatController from '../controllers/chat.controller.js'
-import { ctrlWrapper } from '../utils'
+import { ctrlWrapper } from '../utils/ctrlWrapper.js'
 import { authenticate } from '../middlewares/authenticate.js'
 
 const router = express.Router()

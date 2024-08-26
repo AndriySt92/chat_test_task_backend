@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 import UserModel from '../models/user.model.js'
-import { httpError, generateToken } from '../utils'
+import { httpError } from '../utils/httpError.js'
+import { generateToken } from '../utils/generateToken.js'
 import chatService from './chat.service.js'
 
 const register = async (registerData) => {

@@ -1,6 +1,6 @@
 import MessageModel from '../models/message.model.js'
 import ChatModel from '../models/chat.model.js'
-import { httpError } from '../utils'
+import { httpError } from '../utils/httpError.js'
 import { io } from '../socket/socket.js'
 import { getRandomQuote } from '../helpers/getRandomQuote.js'
 
