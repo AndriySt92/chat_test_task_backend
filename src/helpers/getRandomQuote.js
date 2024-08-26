@@ -5,7 +5,7 @@ export const getRandomQuote = async () => {
     return
   }
 
-  const data: any = await response.json()
+  const data = await response.json()
 
   if (!data.quotes || data.quotes.length === 0) {
     return

@@ -1,13 +1,6 @@
 import mongoose from 'mongoose'
 
-export interface IMessageSchema {
-  authorId: mongoose.Schema.Types.ObjectId; 
-  message: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const messageSchema = new mongoose.Schema<IMessageSchema>(
+const messageSchema = new mongoose.Schema(
   {
     authorId: {
       type: mongoose.Schema.Types.ObjectId,

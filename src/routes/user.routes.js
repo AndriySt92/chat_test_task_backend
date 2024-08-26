@@ -1,7 +1,7 @@
 import express from 'express'
-import UserController from '../controllers/user.controller'
+import UserController from '../controllers/user.controller.js'
 import { ctrlWrapper, loginValidation, registerValidation } from '../utils'
-import { authenticate } from '../middlewares/authenticate'
+import { authenticate } from '../middlewares/authenticate.js'
 
 const router = express.Router()
 

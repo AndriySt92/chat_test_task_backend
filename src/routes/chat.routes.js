@@ -1,7 +1,7 @@
 import express from 'express'
-import ChatController from '../controllers/chat.controller'
+import ChatController from '../controllers/chat.controller.js'
 import { ctrlWrapper } from '../utils'
-import { authenticate } from '../middlewares/authenticate'
+import { authenticate } from '../middlewares/authenticate.js'
 
 const router = express.Router()
 

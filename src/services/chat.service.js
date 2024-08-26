@@ -1,9 +1,8 @@
-import ChatModel from '../models/chat.model'
-import { ICreateChatData, IUpdateChatData } from '../interfaces/chatInterfaces'
+import ChatModel from '../models/chat.model.js'
 import { httpError } from '../utils'
-import { initialChats } from '../seedData/initialChats'
+import { initialChats } from '../seedData/initialChats.js'
 
-const create = async ({ lastName, firstName, userId }: ICreateChatData) => {
+const create = async ({ lastName, firstName, userId }) => {
   const createdChat = await ChatModel.create({
     bot_firstName: firstName,
     bot_lastName: lastName,
@@ -13,7 +12,7 @@ const create = async ({ lastName, firstName, userId }: ICreateChatData) => {
   return createdChat
 }
 
-const update = async ({ lastName, firstName, userId, chatId }: IUpdateChatData) => {
+const update = async ({ lastName, firstName, userId, chatId }) => {
   const updateChat = await ChatModel.findOneAndUpdate(
     { _id: chatId, user_creator: userId },
     { $set: { bot_lastName: lastName, bot_firstName: firstName } },
@@ -27,8 +26,8 @@ const update = async ({ lastName, firstName, userId, chatId }: IUpdateChatData) 
   return updateChat
 }
 
-const getAll = async (userId: string, search: string) => {
-  const query: any = { user_creator: userId }
+const getAll = async (userId, search) => {
+  const query = { user_creator: userId }
 
   if (search) {
     query['$or'] = [
@@ -40,7 +39,7 @@ const getAll = async (userId: string, search: string) => {
   return await ChatModel.find(query).select('-messages').populate('lastMessage')
 }
 
-const getMessages = async ({ userId, chatId }: { userId: string; chatId: string }) => {
+const getMessages = async ({ userId, chatId }) => {
   const chat = await ChatModel.findOne({ user_creator: userId, _id: chatId })
     .select('messages')
     .populate('messages')
@@ -48,7 +47,7 @@ const getMessages = async ({ userId, chatId }: { userId: string; chatId: string 
   return chat ? chat.messages : []
 }
 
-const remove = async ({ userId, chatId }: { userId: string; chatId: string }) => {
+const remove = async ({ userId, chatId }) => {
   const deletedChat = await ChatModel.findOneAndDelete({ user_creator: userId, _id: chatId })
 
   if (!deletedChat) {
@@ -58,7 +57,7 @@ const remove = async ({ userId, chatId }: { userId: string; chatId: string }) =>
   return deletedChat._id
 }
 
-const addInitialChats = async (userId: string) => {
+const addInitialChats = async (userId) => {
   const chatPromises = initialChats.map((chat) =>
     ChatModel.create({
       bot_firstName: chat.firstName,

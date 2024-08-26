@@ -1,11 +1,10 @@
-import MessageModel from '../models/message.model'
-import ChatModel from '../models/chat.model'
-import { ICreateMessageData, IUpdateMessageData } from '../interfaces/messageInterfaces'
+import MessageModel from '../models/message.model.js'
+import ChatModel from '../models/chat.model.js'
 import { httpError } from '../utils'
-import { io } from '../socket/socket'
-import { getRandomQuote } from '../helpers/getRandomQuote'
+import { io } from '../socket/socket.js'
+import { getRandomQuote } from '../helpers/getRandomQuote.js'
 
-const create = async ({ messageText, senderId, receiverId }: ICreateMessageData) => {
+const create = async ({ messageText, senderId, receiverId }) => {
   const message = await MessageModel.create({
     authorId: senderId,
     message: messageText,
@@ -39,7 +38,7 @@ const create = async ({ messageText, senderId, receiverId }: ICreateMessageData)
   return message
 }
 
-const update = async ({ messageText, senderId, messageId }: IUpdateMessageData) => {
+const update = async ({ messageText, senderId, messageId }) => {
   const updatedMessage = await MessageModel.findOneAndUpdate(
     { _id: messageId, authorId: senderId },
     { $set: { message: messageText } },

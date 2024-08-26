@@ -1,20 +1,19 @@
-import { Request, Response } from 'express'
-import MessageService from '../services/message.service'
+import MessageService from '../services/message.service.js'
 
-const addMessage = async (req: Request, res: Response) => {
+const addMessage = async (req, res) => {
   const { messageText } = req.body
   const { id: receiverId } = req.params
-  const senderId = req.user?._id as string
+  const senderId = req.user._id
 
   const message = await MessageService.create({ messageText, receiverId, senderId })
 
   res.status(200).json({ message })
 }
 
-const updateMessage = async (req: Request, res: Response) => {
+const updateMessage = async (req, res) => {
   const { messageText } = req.body
   const { id: messageId } = req.params
-  const senderId = req.user?._id as string
+  const senderId = req.user._id
 
   const message = await MessageService.update({ messageText, messageId, senderId })
 

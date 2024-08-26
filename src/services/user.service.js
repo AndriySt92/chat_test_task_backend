@@ -1,10 +1,9 @@
 import bcrypt from 'bcryptjs'
-import UserModel from '../models/user.model'
+import UserModel from '../models/user.model.js'
 import { httpError, generateToken } from '../utils'
-import { ILoginData, IRegisterData, IUser } from '../interfaces/userInterfaces'
-import chatService from './chat.service'
+import chatService from './chat.service.js'
 
-const register = async (registerData: IRegisterData): Promise<IUser & { token: string }> => {
+const register = async (registerData) => {
   const { firstName, lastName, password, email } = registerData
 
   const user = await UserModel.findOne({ email })
@@ -22,7 +21,7 @@ const register = async (registerData: IRegisterData): Promise<IUser & { token: s
     password: hashedPassword,
   })
 
-  await chatService.addInitialChats(newUser._id.toString());
+  await chatService.addInitialChats(newUser._id.toString())
 
   const token = generateToken(newUser._id.toString())
 
@@ -32,7 +31,7 @@ const register = async (registerData: IRegisterData): Promise<IUser & { token: s
   }
 }
 
-const login = async (loginData: ILoginData): Promise<IUser & { token: string }> => {
+const login = async (loginData) => {
   const { password, email } = loginData
 
   const user = await UserModel.findOne({ email })
@@ -51,7 +50,6 @@ const login = async (loginData: ILoginData): Promise<IUser & { token: string }> 
 
   return { ...user.toObject(), token }
 }
-
 
 export default {
   register,

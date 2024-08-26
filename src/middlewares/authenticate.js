@@ -1,16 +1,10 @@
-import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { IDecodedToken, IUser } from '../interfaces/userInterfaces'
-import userModel from '../models/user.model'
-
-interface AuthenticatedRequest extends Request {
-  user?: IUser
-}
+import userModel from '../models/user.model.js'
 
 export const authenticate = async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction,
+  req,
+  res,
+  next,
 ) => {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
@@ -19,7 +13,7 @@ export const authenticate = async (
     return res.status(401).json({ error: 'Unauthorized - No Token Provided' })
   }
 
-  const { id } = jwt.verify(token, process.env.JWT_SECRET as string) as IDecodedToken
+  const { id } = jwt.verify(token, process.env.JWT_SECRET)
 
   if (!id) {
     return res.status(401).json({ error: 'Unauthorized - Invalid Token' })
@@ -31,7 +25,7 @@ export const authenticate = async (
     return res.status(404).json({ error: 'User not found' })
   }
 
-  req.user = user.toObject() as IUser;
+  req.user = user.toObject();
 
   next()
 }
