@@ -7,12 +7,12 @@ import chatRoutes from './src/routes/chat.routes'
 import messageRoutes from './src/routes/message.routes'
 import { IHttpError } from './src/interfaces/errorInterfaces'
 import { errorMessageList } from './src/utils/httpError'
+import { app, server } from './src/socket/socket'
 
-const app = express()
 dotenv.config()
 connectDB()
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use(express.json())
@@ -36,6 +36,6 @@ app.use((err: IHttpError, req: Request, res: Response, next: NextFunction): void
   res.status(status).json({ message })
 })
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`server is listening on ${PORT}`)
 })

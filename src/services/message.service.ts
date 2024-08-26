@@ -2,6 +2,8 @@ import MessageModel from '../models/message.model'
 import ChatModel from '../models/chat.model'
 import { ICreateMessageData, IUpdateMessageData } from '../interfaces/messageInterfaces'
 import { httpError } from '../utils'
+import { io } from '../socket/socket'
+import { getRandomQuote } from '../helpers/getRandomQuote'
 
 const create = async ({ messageText, senderId, receiverId }: ICreateMessageData) => {
   const message = await MessageModel.create({
@@ -15,37 +17,23 @@ const create = async ({ messageText, senderId, receiverId }: ICreateMessageData)
     { new: true },
   )
 
-  //Implement socket and response from bot
+  io.emit('newMessage', message)
 
   setTimeout(async () => {
-    try {
-      // const response = await fetch('https://api.quotable.io/quotes/random');
-      
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // }
-      
-      // const data: any = await response.json();
-      
-      // const quote = data.content;
-      // const author = data.author;
-      
+    const quote = await getRandomQuote()
 
-      const message = await MessageModel.create({
-        authorId: receiverId,
-        message: "Bot message",
-      })
+    const message = await MessageModel.create({
+      authorId: receiverId,
+      message: quote || 'Bot message',
+    })
 
-      await ChatModel.findOneAndUpdate(
-        { user_creator: senderId, _id: receiverId },
-        { $push: { messages: message._id }, $set: { lastMessage: message._id } },
-        { new: true },
-      )
-      
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      return null;
-    }
+    await ChatModel.findOneAndUpdate(
+      { user_creator: senderId, _id: receiverId },
+      { $push: { messages: message._id }, $set: { lastMessage: message._id } },
+      { new: true },
+    )
+    
+    io.emit('newMessage', message)
   }, 3000)
 
   return message
